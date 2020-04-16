@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgrnd_clr"
-    android:orientation="vertical"
-    tools:context=".Chat_page">
+    tools:context=".Message_page"
+    >
+
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/bar_layout"
         android:layout_width="match_parent"
         android:layout_height="55dp">
 
@@ -31,25 +32,47 @@
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginEnd="30dp"
                 android:text="Username"
                 android:textAlignment="center"
                 android:textColor="@color/cardview_light_background"
-                android:textSize="28sp"
-                android:textStyle="bold|italic" />
+                android:textSize="24sp"/>
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/tab_bar" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp" />
+        android:layout_above="@+id/bottom"
+        android:layout_below="@+id/bar_layout"
+        android:background="@drawable/background"/>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="10dp"
+            android:hint="Type your message"/>
+
+        <ImageView
+            android:id="@+id/send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:src="@drawable/ic_send_black_24dp"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

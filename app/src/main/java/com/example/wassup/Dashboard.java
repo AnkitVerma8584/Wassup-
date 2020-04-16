@@ -163,15 +163,15 @@ public class Dashboard extends AppCompatActivity {
         SharedPreferences myobj =getSharedPreferences("Phone number",MODE_PRIVATE);
         String phn=myobj.getString("Number",null);
 
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(phn);
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
 
 
 
         HashMap<String,String> hashMap=new HashMap<>();
-        hashMap.put("id",uid);
-        hashMap.put("Username",username);
-        hashMap.put("About",about);
-        hashMap.put("Image",image);
+        hashMap.put("uid",uid);
+        hashMap.put("username",username+" ");
+        hashMap.put("about",about);
+        hashMap.put("image",image);
 
         reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

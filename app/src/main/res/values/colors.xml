@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="bright">#B595F3</color>
     <color name="light">#E8F78D</color>
+    <color name="left">#4DF454</color>
+    <color name="right">#40B345</color>
 </resources>

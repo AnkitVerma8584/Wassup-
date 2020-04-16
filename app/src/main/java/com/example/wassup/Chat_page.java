@@ -15,6 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -27,8 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class Chat_page extends AppCompatActivity {
-    private TextView detail,log;
+    private TextView detail;
     private ImageView pic;
 
     FirebaseAuth firebaseAuth;
@@ -58,7 +62,7 @@ public class Chat_page extends AppCompatActivity {
         chats = findViewById(R.id.chat);
         stat=findViewById(R.id.status);
         users=findViewById(R.id.user);
-        viewPager=findViewById(R.id.Fragmentcontainer);
+        viewPager=findViewById(R.id.view_pager);
         pagerViewAdapter = new PagerViewAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerViewAdapter);
         restore();
@@ -100,18 +104,15 @@ public class Chat_page extends AppCompatActivity {
             }
         });
 
-        try{
+
             firebaseAuth=FirebaseAuth.getInstance();
             firebaseUser= firebaseAuth.getCurrentUser();
             assert firebaseUser!=null;
             String s =firebaseUser.getUid();
             SharedPreferences myobj =getSharedPreferences("Phone number",MODE_PRIVATE);
             String phn=myobj.getString("Number",null);
-            reference= FirebaseDatabase.getInstance().getReference().child("Users").child(phn);
-            showname();}
-        catch (Exception e) { detail.setText("Locha");
-            e.printStackTrace();
-        }
+            reference= FirebaseDatabase.getInstance().getReference().child("Users").child(s);
+            showname();
 
     }
 
@@ -140,11 +141,15 @@ public class Chat_page extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                AddS aa=dataSnapshot.getValue(AddS.class);
-                detail.setText(aa.Username);
+               AddS addS=dataSnapshot.getValue(AddS.class);
+
+
+                detail.setText(addS.username);
                 detail.setTextSize(25f);
-                String x=aa.Image;
+                String x=addS.image;
+
                 Glide.with(getApplicationContext()).load(x).into(pic);
+
             }
 
             @Override
