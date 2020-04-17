@@ -23,8 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.ViewHolder>{
-    public static final int MSG_TYPE_LEFT=0;
-    public static final int MSG_TYPE_RIGHT=1;
+    private static final int MSG_TYPE_LEFT=0;
+    private static final int MSG_TYPE_RIGHT=1;
     private Context mContext;
     private List<Chat> mChat;
 
@@ -63,7 +63,7 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.ViewHol
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
-        public ImageView profile_image;
+        //public ImageView profile_image;
         public ViewHolder(View itemView)
         {
             super(itemView);
