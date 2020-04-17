@@ -180,7 +180,7 @@ public class Chat_page extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.logout:
             firebaseAuth.signOut();
-            startActivity(new Intent(Chat_page.this,MainActivity.class));
+            startActivity(new Intent(Chat_page.this,RegisterActivity.class));
             finish();
             break;
         }

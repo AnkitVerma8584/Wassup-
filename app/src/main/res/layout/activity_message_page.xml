@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Message_page"
+    android:background="@drawable/background"
     >
 
 
@@ -48,26 +49,29 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom"
         android:layout_below="@+id/bar_layout"
-        android:background="@drawable/background"/>
+        />
 
     <RelativeLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
         android:layout_alignParentBottom="true">
 
         <EditText
             android:id="@+id/text"
+            android:background="@drawable/text_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginStart="10dp"
+
             android:hint="Type your message"/>
 
         <ImageView
             android:id="@+id/send"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="0dp"
             android:src="@drawable/ic_send_black_24dp"/>
