@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Profile_class">
+
+    <ImageView
+        android:id="@+id/profileimage"
+        android:layout_width="280dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        app:srcCompat="@drawable/user" />
+
+    <ImageView
+        android:id="@+id/remove_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/profileimage"
+        android:layout_alignBottom="@+id/profileimage"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/delete" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileimage"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:textSize="30dp" />
+    <EditText
+        android:id="@+id/editusername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/profileimage"
+        android:padding="5dp"
+        android:hint="Username"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/Status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="20dp"
+        android:padding="5dp"
+        android:background="@drawable/border"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textSize="22dp" />
+
+    <EditText
+        android:id="@+id/editStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:hint="Status"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:paddingStart="5dp"
+        android:drawableStart="@drawable/ic_phone_black_24dp"
+        android:drawablePadding="5dp"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:textSize="25dp"
+        android:layout_below="@+id/Status" />
+
+
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phone"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/border"
+        android:text="TextView"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/editabout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phone"
+        android:padding="5dp"
+        android:inputType="textMultiLine"
+        android:layout_margin="10dp"
+        android:hint="Write about you"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:padding="5dp"
+        android:textSize="25sp"
+        android:textAllCaps="false"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        />
+
+    <TextView
+        android:id="@+id/savechange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Changes"
+        android:textColor="@color/right"
+        android:textSize="25sp"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        />
+
+</RelativeLayout>

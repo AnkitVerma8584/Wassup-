@@ -3,8 +3,11 @@ package com.example.wassup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.usage.NetworkStats;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -41,12 +44,14 @@ public class RegisterActivity extends AppCompatActivity {
     TextView resend;
     String num, id, cod;
     private FirebaseAuth mAuth;
-    DatabaseReference reference;
+    int t=0;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         countryCodePicker = findViewById(R.id.ccp);
         number = findViewById(R.id.phone);
         next = findViewById(R.id.getcode);
@@ -54,18 +59,18 @@ public class RegisterActivity extends AppCompatActivity {
         nxt = findViewById(R.id.verifycode);
         resend = findViewById(R.id.rsd);
         countryCodePicker.registerCarrierNumberEditText(number);
-
-
         mAuth = FirebaseAuth.getInstance();
-
-
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (TextUtils.isEmpty(number.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Enter a number", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else if(number.getText().toString().replace(" ","").length()!=10){
+                    Toast.makeText(getApplicationContext(), "Number should be of 10 digits", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     num = countryCodePicker.getFullNumberWithPlus().replace(" ", "");
                     SharedPreferences.Editor obj = getSharedPreferences("Phone number", MODE_PRIVATE).edit();
                     obj.putString("Number", num);
@@ -80,14 +85,24 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cod = cd.getText().toString().trim();
+                if(cod.length()!=6)
+                {
+                    Toast.makeText(getApplicationContext(),"Enter a  valid code format",Toast.LENGTH_SHORT).show();
+                }
+                try{
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, cod);
-                signInWithPhoneAuthCredential(credential);
+                signInWithPhoneAuthCredential(credential);} catch (Exception e) {
+
+                    Toast.makeText(getApplicationContext(),"Verification failed",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Verifynumber();
+                try{Verifynumber();} catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Error in signing in.\n Please try again after sometimes",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -140,15 +155,52 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Successfully logged in", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, Dashboard.class));
-                            finish();
+                            check();
+                            if(t==0)
+                            {
+                                startActivity(new Intent(RegisterActivity.this, Dashboard.class));
+                                finish();
+                            }
                             FirebaseUser user = task.getResult().getUser();
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "Verification failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
 
                         }
                     }
                 });
+    }
+
+    private void check() {
+
+       final  FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference r=FirebaseDatabase.getInstance().getReference("Users");
+        r.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                { AddS user= snapshot.getValue(AddS.class);
+                    assert user!=null;
+
+                    assert firebaseUser != null;
+                    if(firebaseUser.getUid().equals(user.getUid()))
+                    {
+                        t =1;
+                        Intent intent=new Intent(RegisterActivity.this,Chat_page.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

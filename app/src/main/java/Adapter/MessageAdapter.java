@@ -28,8 +28,6 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.ViewHol
     private Context mContext;
     private List<Chat> mChat;
 
-    FirebaseUser fuser;
-
     public MessageAdapter(Context mContext,List<Chat> mChat)
     {
         this.mChat=mChat;
@@ -46,7 +44,6 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.ViewHol
             return new MessageAdapter.ViewHolder(view);}
 
     }
-
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         Chat chat= mChat.get(position);
@@ -61,19 +58,20 @@ public class MessageAdapter extends RecyclerView.Adapter <MessageAdapter.ViewHol
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
-        //public ImageView profile_image;
+
         public ViewHolder(View itemView)
         {
             super(itemView);
 
             show_message=itemView.findViewById(R.id.show_message);
-            //profile_image=itemView.findViewById(R.id.profile_image);
+
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        fuser=FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+        assert fuser != null;
         if(mChat.get(position).getSender().equals(fuser.getUid()))
         {
             return MSG_TYPE_RIGHT;

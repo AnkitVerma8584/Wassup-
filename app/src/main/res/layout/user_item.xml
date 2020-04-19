@@ -3,26 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
+    android:padding="5dp"
+    android:background="@drawable/border"
+    android:layout_marginTop="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     >
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/profile_image"
         android:background="@drawable/user"
+        android:layout_margin="3dp"
         app:srcCompat="@drawable/user"/>
 
     <TextView
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:id="@+id/username"
-        android:layout_toRightOf="@+id/profile_image"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/profile_image"
-        android:layout_marginStart="10dp"
-        android:layout_centerVertical="true"
-        android:textSize="25sp"/>
+        android:text="Username"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="0dp"
+        android:text="HI there"
+        android:textSize="14dp"
+        android:layout_toEndOf="@+id/profile_image" />
 
 
 </RelativeLayout>

@@ -43,8 +43,6 @@ public class Chat_page extends AppCompatActivity {
     ViewPager viewPager;
     PagerViewAdapter pagerViewAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +142,7 @@ public class Chat_page extends AppCompatActivity {
                AddS addS=dataSnapshot.getValue(AddS.class);
 
 
+                assert addS != null;
                 detail.setText(addS.username);
                 detail.setTextSize(25f);
                 String x=addS.image;
@@ -154,7 +153,6 @@ public class Chat_page extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -166,7 +164,6 @@ public class Chat_page extends AppCompatActivity {
         stat.setTextSize(20f);
         users.setTextColor(Color.GRAY);
         users.setTextSize(20f);
-
     }
 
     @Override
@@ -183,8 +180,14 @@ public class Chat_page extends AppCompatActivity {
             startActivity(new Intent(Chat_page.this,RegisterActivity.class));
             finish();
             break;
-        }
-        return super.onOptionsItemSelected(item);
 
+            case R.id.prof:
+                Intent it=new Intent(Chat_page.this,Profile_class.class);
+                it.putExtra("user",firebaseUser.getUid());
+                startActivity(it);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

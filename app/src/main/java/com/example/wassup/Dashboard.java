@@ -5,10 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -24,8 +27,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -33,12 +39,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
+import Adapter.UserAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Dashboard extends AppCompatActivity {
     private ImageView profile;
     private EditText uname,abt;
     private Button save;
+    private TextView nt;
 
     public static final int PICK_IMAGE = 1;
     private Uri imageuri;
@@ -46,24 +54,40 @@ public class Dashboard extends AppCompatActivity {
     private ProgressDialog progress;
     FirebaseAuth auth;
     DatabaseReference reference;
+    String phone="";
+
+    FirebaseUser firebaseUser;
 
 
     private String username = "",about="";
-    static String g = "", img_url = "";
+    static String img_url = "";
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        SharedPreferences myobj =getSharedPreferences("Phone number",MODE_PRIVATE);
+        phone=myobj.getString("Number",null);
+
+       // check();
 
         profile=findViewById(R.id.profilepic);
         uname=findViewById(R.id.username);
         abt=findViewById(R.id.about);
         save=findViewById(R.id.go);
+        nt=findViewById(R.id.note);
 
         auth=FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference().child("Profilepics");
         progress=new ProgressDialog(this);
+
+        firebaseUser=auth.getCurrentUser();
+
+
+        Toast.makeText(getApplicationContext(),"Enter the following details",Toast.LENGTH_SHORT).show();
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +117,7 @@ public class Dashboard extends AppCompatActivity {
 
     }
 
+
     void storeimage() {//To store the pic
         try {
             if (imageuri != null) {
@@ -110,7 +135,7 @@ public class Dashboard extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         img_url = uri.toString();// to store url of the image
                                         progress.dismiss();
-                                        while(img_url!="")
+                                        while(!img_url.equals(""))
                                         {savedetails(img_url);
                                           return;
                                         }
@@ -156,21 +181,19 @@ public class Dashboard extends AppCompatActivity {
     }
     void savedetails(String image)
     {
-        FirebaseUser firebaseUser=auth.getCurrentUser();
+
         assert firebaseUser!=null;
         String uid=firebaseUser.getUid();
+        String status="Am single! Let's mingle.";
 
-        SharedPreferences myobj =getSharedPreferences("Phone number",MODE_PRIVATE);
-        String phn=myobj.getString("Number",null);
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
-
-
-
         HashMap<String,String> hashMap=new HashMap<>();
         hashMap.put("uid",uid);
         hashMap.put("username",username+" ");
         hashMap.put("about",about);
+        hashMap.put("status",status);
+        hashMap.put("phone",phone);
         hashMap.put("image",image);
 
         reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -198,11 +221,11 @@ public class Dashboard extends AppCompatActivity {
         {
             imageuri=data.getData();
             profile.setImageURI(imageuri);
+            nt.setVisibility(View.INVISIBLE);
         }}
         catch (Exception e){
             Toast.makeText(Dashboard.this, "You have not selected any image.", Toast.LENGTH_SHORT).show();}
 
     }
-
 }
 

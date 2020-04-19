@@ -1,18 +1,18 @@
 package com.example.wassup;
 
 public class AddS {
-    public String username,about,uid,image;
+    public String username,about,uid,status,phone,image;
 
     public AddS(){}
 
-    public AddS(String username, String about, String uid, String image) {
+    public AddS(String username, String about, String uid,String status,String phone, String image) {
         this.username = username;
         this.about = about;
         this.uid = uid;
+        this.status=status;
+        this.phone=phone;
         this.image = image;
     }
-
-
 
     public String getUsername() {
         return username;
@@ -30,12 +30,28 @@ public class AddS {
         this.about = about;
     }
 
-    public String getId() {
+    public String getUid() {
         return uid;
     }
 
-    public void setId(String id) {
-        this.uid = id;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getImage() {

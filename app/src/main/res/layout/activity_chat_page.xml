@@ -37,7 +37,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/cardview_light_background"
                 android:textSize="28sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                tools:ignore="HardcodedText,PrivateResource" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +54,9 @@ public class Message_page extends AppCompatActivity {
 
     Intent intent;
 
+    String usr_id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +65,8 @@ public class Message_page extends AppCompatActivity {
         Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
+        final RelativeLayout l=findViewById(R.id.msg);
+
         profile_pic=findViewById(R.id.profilepic);
         name=findViewById(R.id.username);
         msg=findViewById(R.id.text);
@@ -77,10 +80,30 @@ public class Message_page extends AppCompatActivity {
 
         intent = getIntent();
         final String user_id=intent.getStringExtra("userid");
+        usr_id=user_id;
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         assert user_id != null;
         reference= FirebaseDatabase.getInstance().getReference("Users").child(user_id);
+
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(Message_page.this,Profile_class.class);
+                it.putExtra("user",usr_id);
+                startActivity(it);
+            }
+        });
+
+        profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent it =new Intent(Message_page.this,Picture.class);
+                it.putExtra("UID",usr_id);
+               startActivity(it);
+            }
+        });
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -88,7 +111,6 @@ public class Message_page extends AppCompatActivity {
                 AddS addS=dataSnapshot.getValue(AddS.class);
                 name.setText(addS.username);
                 Glide.with(Message_page.this).load(addS.getImage()).into(profile_pic);
-
                 readMessage(fuser.getUid(),user_id);
             }
 
@@ -149,5 +171,26 @@ public class Message_page extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.profile:
+                Intent it=new Intent(Message_page.this,Profile_class.class);
+                it.putExtra("user",usr_id);
+                startActivity(it);
+                break;
+
+            case R.id.block:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
