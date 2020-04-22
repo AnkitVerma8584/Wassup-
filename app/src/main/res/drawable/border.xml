@@ -3,16 +3,23 @@
 
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#FBF8F8"/>
-            <stroke android:color="#706C6C"
-                android:width="3dp"/>
+            <solid android:color="#FFFFFF"/>
+            <stroke android:color="#595555"
+                android:width="4dp"/>
+            <corners android:radius="20dp"/>
         </shape>
     </item>
+
 
     <item  android:bottom="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF"/>
+            <gradient android:startColor="#69FF2E"
+                android:endColor="#EA7BB1"
+                android:angle="0"
+                />
+            <corners android:radius="20dp"/>
         </shape>
 
     </item>
+
 </layer-list>

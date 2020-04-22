@@ -46,16 +46,40 @@ public class Chat_page extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_chat_page);
 
         Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
+        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseUser= firebaseAuth.getCurrentUser();
+        assert firebaseUser!=null;
+        final String s =firebaseUser.getUid();
+        SharedPreferences myobj =getSharedPreferences("Phone number",MODE_PRIVATE);
+        String phn=myobj.getString("Number",null);
+        reference= FirebaseDatabase.getInstance().getReference().child("Users").child(s);
+        showname();
+
         detail=findViewById(R.id.username);
+        detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(Chat_page.this,Profile_class.class);
+                it.putExtra("user",firebaseUser.getUid());
+                startActivity(it);
+            }
+        });
+
         pic=findViewById(R.id.profilepic);
+        pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(Chat_page.this, Picture.class);
+                it.putExtra("UID",s);
+                startActivity(it);
+            }
+        });
 
         chats = findViewById(R.id.chat);
         stat=findViewById(R.id.status);
@@ -103,14 +127,7 @@ public class Chat_page extends AppCompatActivity {
         });
 
 
-            firebaseAuth=FirebaseAuth.getInstance();
-            firebaseUser= firebaseAuth.getCurrentUser();
-            assert firebaseUser!=null;
-            String s =firebaseUser.getUid();
-            SharedPreferences myobj =getSharedPreferences("Phone number",MODE_PRIVATE);
-            String phn=myobj.getString("Number",null);
-            reference= FirebaseDatabase.getInstance().getReference().child("Users").child(s);
-            showname();
+
 
     }
 

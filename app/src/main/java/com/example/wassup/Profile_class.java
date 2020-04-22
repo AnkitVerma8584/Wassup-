@@ -56,9 +56,8 @@ public class Profile_class extends AppCompatActivity {
     private StorageReference mStorageRef;
     private ProgressDialog progress;
 
-    String usrnm="";
-    String ests="";
-    String ebi="";
+    String usrnm="",ests="",ebi="";
+
 
     DatabaseReference reference;
 
@@ -130,11 +129,21 @@ public class Profile_class extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usrnm=ename.getText().toString();
-                ests=estatus.getText().toString();
-                ebi=ebio.getText().toString();
-
-                storeimage();
+                usrnm=ename.getText().toString().trim();
+                ests=estatus.getText().toString().trim();
+                ebi=ebio.getText().toString().trim();
+                if(usrnm.length()>15)
+                {
+                    ename.requestFocus();
+                    Toast.makeText(getApplicationContext(),"Username too long\n Set within 15 characters",Toast.LENGTH_SHORT).show();
+                }
+                if(ests.length()>25)
+                {
+                    ename.requestFocus();
+                    Toast.makeText(getApplicationContext(),"Username too long\n Set within 25 characters",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    storeimage();}
             }
         });
 
@@ -218,9 +227,9 @@ public class Profile_class extends AppCompatActivity {
         }
     }
 
-    private void loadinfo(String id) {
+    private void loadinfo(final String id) {
 
-       DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users").child(id);
+       try{DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users").child(id);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -238,7 +247,7 @@ public class Profile_class extends AppCompatActivity {
                 img_url=addS.getImage();
                 try{
                 Glide.with(Profile_class.this).load(img_url).into(pic);} catch (Exception e) {
-                    e.printStackTrace();
+                    loadinfo(id);
                 }
             }
 
@@ -246,7 +255,9 @@ public class Profile_class extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });} catch (Exception e) {
+           loadinfo(id);
+       }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

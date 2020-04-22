@@ -181,7 +181,6 @@ public class RegisterActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren())
                 { AddS user= snapshot.getValue(AddS.class);
                     assert user!=null;
-
                     assert firebaseUser != null;
                     if(firebaseUser.getUid().equals(user.getUid()))
                     {

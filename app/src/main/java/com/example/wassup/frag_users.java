@@ -1,5 +1,6 @@
 package com.example.wassup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class frag_users extends Fragment {
     private void readUsers()
     {
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        try{DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,7 +84,10 @@ public class frag_users extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });}
+        catch (Exception e) {
+            readUsers();
+        }
     }
 
 }

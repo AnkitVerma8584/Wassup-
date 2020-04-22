@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Dashboard extends AppCompatActivity {
     private ImageView profile;
+    private TextInputLayout un;
     private EditText uname,abt;
     private Button save;
     private TextView nt;
@@ -73,7 +75,7 @@ public class Dashboard extends AppCompatActivity {
         phone=myobj.getString("Number",null);
 
        // check();
-
+        un=findViewById(R.id.textInputLayout);
         profile=findViewById(R.id.profilepic);
         uname=findViewById(R.id.username);
         abt=findViewById(R.id.about);
@@ -105,11 +107,16 @@ public class Dashboard extends AppCompatActivity {
                 about=abt.getText().toString().trim();
                 if(TextUtils.isEmpty(username))
                 {
-                    Toast.makeText(getApplicationContext(),"PLease Enter a Username",Toast.LENGTH_LONG).show();
-                    abt.requestFocus();
+                    un.setError("Username cannot be empty");
+                    uname.requestFocus();
+                }
+                if(username.length()>15)
+                {
+                    un.setError("Username too long.");
+                    uname.requestFocus();
                 }
                 else
-                {
+                {    un.setError(null);
                     storeimage();
                 }
             }
